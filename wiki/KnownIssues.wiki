@@ -7,6 +7,7 @@ In order of most frequent, the following are common issues:
    # The Kinect SDK needs to be version 1.6 (http://www.microsoft.com/en-gb/download/details.aspx?id=34808)
    # The Kinect is too far away too work.  1.0m -> 1.2m works well.
    # Touch doesn't work but the Like button does?  Download the Touch Fix (https://code.google.com/p/ubidisplays/downloads/detail?name=UbiDisplays.exe)
+   # It crashes when I close it and try to run it again.  In this case, make sure the Ubi Displays.exe process is not running in the task manager.
    # You are on a MacBook with a retina display.  Set your system font size to Small (100%) and drop the screen resolution down too 1080p.
 
 = Common Usage Problems =
