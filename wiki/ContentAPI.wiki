@@ -1,0 +1,28 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+There are two main types of toolkit software. The first type is the toolkit _application software_—responsible for hardware configuration, interactive surface layout, and content deployment. The second type is _items of content_—responsible for application specific graphics and behaviour. 
+
+The _Content API_ is a way of letting items of content communicate with the toolkit application and each other.
+
+= Content API =
+
+All the items listed with the 'C# API' label are accessed through the Authority.request mechanism.  All of them items listed with the 'JS API' label are implemented in JavaScript and imported as normal.
+
+||*Function Name*||*API*||*Documentation*||
+||swapdisplay||C# API||Swap this display with one on another surface. Content on the target surface will be moved to the calling surface.<BR> target: The name of the Surface which this display content should jump too.||
+||movedisplay||C# API||Move the calling display to another surface. This will fail if content is already present on the target surface.<BR> target: The name of the Surface which this display content should jump too.<BR> force_reload: Should the display content be re-loaded during the move, or remain active.||
+||swaptargetdisplay||C# API||Swap a display on a target surface with another target surface.<BR> target1: The name of surface which contains the display to be moved.<BR> target2: The name of the surface which will receive the display.||
+||movetargetdisplay||C# API||Move a target display from one surface to another. <BR> source: The name of surface which contains the display to be moved.<BR> dest: The name of the surface which will receive the display.<BR> override: Should content on the destination surface be closed. True of False.<BR> force_reload: Should the display content be re-loaded during the move, or remain active.||
+||closedisplay||C# API||Close the calling display.  This will delete the display from the deployment model and free up all its resources.||
+||closetargetdisplay||C# API||Close the display on a given surface. <BR> target: The name of the Surface which is currently showing the display to be closed.||
+||surfacelist||C# API||Return a list of surface names active in the current deployment model back to the calling display.<BR> callback: The JS function to be called back with the results.||
+||surfaceinfo||C# API||Return information about a surface.<BR> surfaces: An array of string surface names to get the information for. E.g. ["Surface 0"].<BR> callback: The JS function to be called back with the results. Returns a dictionary of results with surface names as keys.  Missing names are not returned.||
+||playsound||C# API||Play a sound at a specified file.  This is deprecated - use HTML5 audio tags where possible.<BR> file: The path to the sound file to play.||
+||opendisplay||C# API||Open a display on another surface.<BR> target: The name of the surface which the content should be opened on.<BR>load: The 'load instruction' (i.e. URL) which should be opened on the new surface.<BR> override: A Boolean which determines if any existing content on the target surface should be closed.||
+||kinectlowestpointcube||C# API||Create a lowest point cube and attach it as a display resource.<BR> relativeto: The name of the surface to detect points relative too (i.e. above the current surface).<BR> callback: The function in the display content which will be called with the results.  It will accept data in the format: [[x,y,z],...]<BR> surface_zoffset: The offset from the surface to start detecting points.<BR> height: The height at which to stop detecting points (+the offset).<BR> point_limit: The maximum number of points to send in any one frame.<BR> sendemptyframes: Should empty data frames be sent.<BR> sendemptysucessiveframes: Should empty data frames AFTER the first empty frame be sent.<BR>||
+||Convert_P2M||JS API||Converts x pixels to meters for the display that calls it<BR> value: The number of pixels to convert. E.g. 100 or 2.23<BR> axis: The dimension to convert using.  "w" for width. "h" for height.<BR> return: The resultant number of meters for 'value' pixels.||
+||Convert_M2P||JS API||Converts x meters to pixels for the display that calls it<BR> value: The number of meters to convert. E.g. 0.2 or 2<BR> axis: The dimension to convert using.  "w" for width. "h" for height.<BR> return: The resultant number of pixels for 'value' pixels.||
+||PresenceDetector||JS API||A presence detector function that will check for the presence of an object in a particular area above (or below) a display surface. <BR> sName: A unique name for this detector. e.g. "low", "middle" or "high", or "switch".<BR> fHeight: The height of the area in meters above the display. In meters.<BR> fOffset: The offset from the surface to start detecting at. In meters.<BR> iCountLimit: The number of points required for a solid detection.<BR>Usage:<BR>`var pd = new PresenceDetector("area", 0.1, 0.02);`<BR>`pd.onFound       = function() { console.log("present"); }`<BR>`pd.onLost        = function() { console.log("not present"); }`<BR>`pd.onStateChange = function(bState) { console.log(bState); }`||
+||KinectTouch||JS API||A class which adds multi-touch to a page.  Uses the same control arguments as 'kinectlowestpointcube' with the following additional parameters:<BR> debug: Should the touch detector render each touch point using a coloured circle.  True for yes. False for no.<BR> trails: Should the touch detector render each point in the point cloud detected above the surface. True for yes.  False for no.<BR>Usage:<BR>`var kt = new KinectTouch({ debug : true, height : 0.02 });`||
