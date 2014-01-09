@@ -4,11 +4,70 @@
 
 There are two main types of toolkit software. The first type is the toolkit _application software_—responsible for hardware configuration, interactive surface layout, and content deployment. The second type is _items of content_—responsible for application specific graphics and behaviour. 
 
+== Writing to the debug log (Authority.log) ==
+
+This is used to log data to the toolkit debug menu.
+{{{
+// Write data to the debug log.
+Authority.log("Some data")
+}}}
+
+== Invoking methods across displays (Authority.call) ==
+
+This is used to communicate across displays.  Imagine you have two displays: `"Surface 0"` and `"Surface 1"`. When `Surface 0` is pressed, it tells `Surface 1` to react somehow.
+
+`Surface 0` 
+{{{
+...
+      <script type="text/javascript">
+         // Once the page has loaded, create a presence detector.
+         $(document).ready(function()
+         {
+            // Create a new presence detector called 'area'.
+            //   0.1m high with a 0.02m offset.
+            var pd = new PresenceDetector("area", 0.1, 0.02);
+            
+            // Tell the other display
+            pd.onStateChange = function(state){
+               
+               Authority.call("Surface 1", "myFunction", state);
+               
+            }
+         };
+      </script>
+...
+}}}
+
+`Surface 1`
+{{{
+...
+      <script type="text/javascript">
+         
+         // This will be called by Surface 0.
+         function myFunction(callingSurface, data) {
+                  // Do something here!
+         }
+      </script>
+...
+}}}
+
+== Invoking toolkit methods (Authority.request) ==
+
 The _Content API_ is a way of letting items of content communicate with the toolkit application and each other.
 
-= Content API =
-
 All the items listed with the 'C# API' label are accessed through the Authority.request mechanism.  All of them items listed with the 'JS API' label are implemented in JavaScript and imported as normal.
+
+{{{
+      <script type="text/javascript">
+         
+         // Once the page has loaded this is possible.
+         $(document).ready(function()
+         {
+             Authority.request("movedisplay", { target : "Surface 1"})
+         }   
+
+      </script>
+}}}
 
 ||*Function Name*||*API*||*Documentation*||
 ||swapdisplay||C# API||Swap this display with one on another surface. Content on the target surface will be moved to the calling surface.<BR> target: The name of the Surface which this display content should jump too.||
