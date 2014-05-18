@@ -85,3 +85,31 @@ All the items listed with the 'C# API' label are accessed through the Authority.
 ||Convert_M2P||JS API||Converts x meters to pixels for the display that calls it<BR> value: The number of meters to convert. E.g. 0.2 or 2<BR> axis: The dimension to convert using.  "w" for width. "h" for height.<BR> return: The resultant number of pixels for 'value' pixels.||
 ||PresenceDetector||JS API||A presence detector function that will check for the presence of an object in a particular area above (or below) a display surface. <BR> sName: A unique name for this detector. e.g. "low", "middle" or "high", or "switch".<BR> fHeight: The height of the area in meters above the display. In meters.<BR> fOffset: The offset from the surface to start detecting at. In meters.<BR> iCountLimit: The number of points required for a solid detection.<BR>Usage:<BR>`var pd = new PresenceDetector("area", 0.1, 0.02);`<BR>`pd.onFound       = function() { console.log("present"); }`<BR>`pd.onLost        = function() { console.log("not present"); }`<BR>`pd.onStateChange = function(bState) { console.log(bState); }`||
 ||KinectTouch||JS API||A class which adds multi-touch to a page.  Uses the same control arguments as 'kinectlowestpointcube' with the following additional parameters:<BR> debug: Should the touch detector render each touch point using a coloured circle.  True for yes. False for no.<BR> trails: Should the touch detector render each point in the point cloud detected above the surface. True for yes.  False for no.<BR>Usage:<BR>`var kt = new KinectTouch({ debug : true, height : 0.02 });`||
+
+
+== Working with Physical Sizes (Surface.XXX and Surface_PropertiesChanged) ==
+
+You can access the physical properties of the Surface through variables on the `Surface` object.
+Like the `Authority` object, the `Surface` object is created by the toolkit when the page loads.  It is also kept up-to-date when any Surface properties change.  You cannot set values, but you can get them via this interface.  If you want to be notified when the physical surface properties change, you can implement the `Surface_PropertiesChanged` function, as below.
+
+{{{
+...
+/** This function is run by the toolkit when the *physical* surface properties change. */
+function Surface_PropertiesChanged()
+{
+	// Print the surface name.
+	Authority.log("" + Surface.Name);
+	
+	// Print the surface dimensions.
+	Authority.log("" + round(Surface.Width, 2) + "m x " + round(Surface.Height, 2) + "m");
+	
+	// Print the surface angle.
+	Authority.log("" + round(Surface.Angle * 57.2957795, 2) + " degrees");
+	
+	// Apply fancy physical responsive design rules.
+	if (Surface.Width < 0.1)
+	{
+		$("body").addClass("smallscreen");
+	}
+...
+}}}
